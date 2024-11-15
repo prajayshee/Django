@@ -67,14 +67,18 @@ reminder_thread.start()
 # User Authentication Views (Login, Signup, Logout)
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            # Authenticate and login the user
-            user = form.get_user()
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
             login(request, user)
-            return redirect('task_list')  # Redirect to the task list page after successful login
-    else:
-        form = AuthenticationForm()
+            # Redirect to the task list page after successful login
+            return redirect('task_list')
+        else:
+            messages.error(request, 'Invalid username or password')
+    
+    return render(request, 'login.html') 
 
     return render(request, 'login.html', {'form': form})
 
