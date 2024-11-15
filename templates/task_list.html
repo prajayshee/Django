@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <style>
+        /* Base Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #83a4d4, #b6fbff);
+            color: #333;
+            padding: 20px;
+        }
+
+        /* Header and Logout container */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* Button Styling */
+        .add-task-button {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            padding: 12px 20px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .add-task-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Task List Container */
+        .task-container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        /* Task Item Styling */
+        .task-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .task-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .task-title {
+            font-size: 1.2rem;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        .task-details {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .task-actions {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        /* Action Buttons */
+        .edit-button, .delete-button, .logout-button {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #fff;
+            margin-left: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-button {
+            background-color: #27ae60;
+        }
+
+        .edit-button:hover {
+            background-color: #219150;
+        }
+
+        .delete-button {
+            background-color: #e74c3c;
+        }
+
+        .delete-button:hover {
+            background-color: #c0392b;
+        }
+
+        .logout-button {
+            background-color: #f39c12;
+        }
+
+        .logout-button:hover {
+            background-color: #e67e22;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .task-container {
+                padding: 15px;
+            }
+            .task-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+        {% endif %}
+    </div>
+
+    <h1>Your Task List</h1>
+    <a href="{% url 'add_task' %}" class="add-task-button">+ Add New Task</a>
+    
+    <div class="task-container">
+        <ul>
+            {% for task in tasks %}
+                <li class="task-item">
+                    <div class="task-title">{{ task.title }}</div>
+                    <div class="task-details">{{ task.description }}</div>
+                    <div class="task-details">Due: {{ task.due_date }} | Priority: {{ task.priority }}</div>
+                    
+                    <div class="task-actions">
+                        <a href="{% url 'edit_task' task.id %}" class="edit-button">Edit</a>
+                        <a href="{% url 'delete_task' task.id %}" class="delete-button">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
