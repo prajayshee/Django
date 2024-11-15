@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
 from .forms import TaskForm, SignupForm
 from .models import Task
 import threading
@@ -78,9 +78,7 @@ def login_view(request):
         else:
             messages.error(request, 'Invalid username or password')
     
-    return render(request, 'login.html') 
-
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html')
 
 def signup_view(request):
     if request.method == 'POST':
